@@ -16,4 +16,8 @@ public class Komponent {
     public float getCena() {
         return cena;
     }
+
+    public float getWaga(){
+        return waga;
+    }
 }

@@ -95,7 +95,7 @@ public class Samochod extends Thread {
     }
 
     public float getWaga() {
-        return 100;
+        return silnik.getWaga() + skrzynia.getWaga() + skrzynia.getSprzeglo().getWaga();
     }
 
     public Pozycja getAktPozycja() {
@@ -104,9 +104,18 @@ public class Samochod extends Thread {
     public Pozycja getStartowaPozycja(){return startowaPozycja;}
 
     public double getAktPredkosc() {
-        // zwrocić 0, jeżeli jest wciśnięte sprzęgło, silnik jest wyłączony lub jest wrzucony luz (aktualny bieg jest 0)
-        // obliczać prędkość jako obroty * przełożenie * 0.008
-        return 10;
+        double predkosc = 0;
+        if (stanWlaczenia){
+            if (!getStanSprzegla()){
+                if (getAktBieg() != 0){
+                    predkosc = getAktObroty() * getAktPrzelozenie() * 0.008;
+                }
+            }
+        }
+        else {
+            predkosc = 0;
+        }
+        return predkosc;
     }
 
     public void run() {

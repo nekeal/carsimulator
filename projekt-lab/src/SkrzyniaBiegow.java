@@ -20,11 +20,21 @@ public class SkrzyniaBiegow extends Komponent {
     }
 
     public int zwiekszBieg(){
-        // zwiekszanie biegow powinno zwiększać przełożenie o 0.5
+        if (getStanSprzegla()){
+            if (aktualnyBieg < iloscBiegow){
+                aktualnePrzelozenie += 0.5;
+                aktualnyBieg += 1;
+            }
+        }
         return aktualnyBieg;
     }
     public int zmniejszBieg(){
-        // zmniejszenie biegu powinno także zmniejszać przełożenie o 0.3
+        if (getStanSprzegla()){
+            if (aktualnyBieg > 0){
+                aktualnePrzelozenie -= 0.5;
+                aktualnyBieg -= 1;
+            }
+        }
         return aktualnyBieg;
     }
     public boolean getStanSprzegla(){
@@ -33,5 +43,4 @@ public class SkrzyniaBiegow extends Komponent {
     protected Sprzeglo getSprzeglo(){
         return sprzeglo;
     }
-
 }

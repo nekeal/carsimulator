@@ -17,8 +17,8 @@ public class SamochodGUI {
     private JCheckBox wlacznik;
     private JButton obrotyUpBtn;
     private JTextField obroty;
+    private JTextField MaxObroty;
     private JButton obrotyDownBtn;
-    private JSpinner maxObroty;
     private JSpinner aktBieg;
     private JSpinner aktPrzelozenie;
     private JLabel label10;
@@ -49,7 +49,6 @@ public class SamochodGUI {
         obrotyDownBtn = new BasicArrowButton(SwingConstants.SOUTH);
         obrotyUpBtn.setPreferredSize(new Dimension(100, -1));
         obrotyDownBtn.setPreferredSize(new Dimension(100, -1));
-        maxObroty = new JSpinner(new SpinnerNumberModel(5000, 3000, 10000, 500));
     }
 
     public SamochodGUI() {
@@ -75,7 +74,14 @@ public class SamochodGUI {
         obrotyUpBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                int noweObroty = getWybranySamochod().dodajGazu();
+                getWybranySamochod().dodajGazu();
+
+            }
+        });
+        obrotyDownBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                getWybranySamochod().hamuj();
 
             }
         });
@@ -149,6 +155,7 @@ public class SamochodGUI {
         maxPredkosc.setText(Double.toString(selected.getMaxPredkosc()));
         nrRejest.setText(selected.getNrRejest());
         obroty.setText(Double.toString(selected.getAktObroty()));
+        MaxObroty.setText(String.valueOf(selected.getMaxObroty()));
         wlacznik.setSelected(selected.getStanWlaczenia());
 
         x.setText(Double.toString(selected.getAktPozycja().getX()));

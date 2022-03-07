@@ -29,10 +29,10 @@ public class Pozycja {
         return false;
     }
 
-    public int odleglosc(Pozycja cel){
-        // obliczanie odległości euklidesowej pomiędzy dwoma punktami (poprawić typ)
-        return 0;
+    public double odleglosc(Pozycja cel){
+        return Math.abs(Math.sqrt(Math.pow((cel.getX() - x), 2)+ Math.pow((cel.getY() - y), 2)));
     }
+
     public void print(){
         System.out.println("x: "+ String.valueOf(x) + " y: " + String.valueOf(y));
     }

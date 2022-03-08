@@ -9,11 +9,15 @@ public class Komponent {
         this.cena = cena;
     }
 
-    public String getNazwa(){
-        return " ";
+    public String getNazwa() {
+        return this.nazwa;
     }
 
     public float getCena() {
-        return cena;
+        return this.cena;
+    }
+
+    public float getWaga() {
+        return this.waga;
     }
 }

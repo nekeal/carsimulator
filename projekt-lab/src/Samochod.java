@@ -10,7 +10,9 @@ public class Samochod extends Thread {
     private Silnik silnik;
     private Pozycja cel;
     private Pozycja startowaPozycja;
-    public Samochod(String nrRejest, String model, float maxPredkosc, SkrzyniaBiegow skrzynia, Pozycja aktualnaPozycja, Silnik silnik) {
+
+    public Samochod(String nrRejest, String model, float maxPredkosc, SkrzyniaBiegow skrzynia, Pozycja aktualnaPozycja,
+            Silnik silnik) {
         this.nrRejest = nrRejest;
         this.model = model;
         this.maxPredkosc = maxPredkosc;
@@ -18,6 +20,8 @@ public class Samochod extends Thread {
         this.aktualnaPozycja = aktualnaPozycja;
         this.silnik = silnik;
         this.stanWlaczenia = false;
+        // this.startowaPozycja = aktualnaPozycja;
+        // this.cel = aktualnaPozycja;
     }
 
     public void wlacz() {
@@ -40,56 +44,76 @@ public class Samochod extends Thread {
     public float getMaxPredkosc() {
         return maxPredkosc;
     }
-    public double getAktObroty(){
+
+    public double getAktObroty() {
         return silnik.getObroty();
     }
-    public int nastepnyBieg(){
+
+    public int nastepnyBieg() {
         return skrzynia.zwiekszBieg();
     }
-    public int poprzedniBieg(){
+
+    public int poprzedniBieg() {
         return skrzynia.zmniejszBieg();
     }
-    public void wcisnijSprzeglo(){
+
+    public void wcisnijSprzeglo() {
         skrzynia.getSprzeglo().wcisnij();
     }
-    public void zwolnijSprzeglo(){
+
+    public void zwolnijSprzeglo() {
         skrzynia.getSprzeglo().zwolnij();
     }
-    public int getAktBieg(){
+
+    public int getAktBieg() {
         return skrzynia.getAktBieg();
     }
-    public float getAktPrzelozenie(){
+
+    public float getAktPrzelozenie() {
         return skrzynia.getAktPrzelozenie();
     }
-    public int dodajGazu(){
+
+    public int dodajGazu() {
         return silnik.zwiekszObroty();
     }
 
-    public boolean getStanSprzegla(){
+    public boolean getStanSprzegla() {
         return skrzynia.getStanSprzegla();
     }
+
     public void wylacz() {
         stanWlaczenia = false;
         silnik.zatrzymaj();
     }
 
-    public void setCel(Pozycja cel) {
-        // ustawienie startowaPozycja na aktualną pozycje
-        // ustawienie celu
+    public void setCel(Pozycja cel_0) {
+        this.startowaPozycja = new Pozycja(this.aktualnaPozycja.getX(), this.aktualnaPozycja.getY());
+        this.cel = new Pozycja(cel_0.getX(), cel_0.getY());
+        // ustawienie startowaPozycja na aktualną pozycje-done
+        // ustawienie celu-done
     }
-    public Pozycja getCel(){
+
+    public Pozycja getCel() {
         return cel;
     }
 
     public void jedzDo(Pozycja cel) {
         long dt = 200;
-        double direction = Math.atan2((cel.getY() - getAktPozycja().getY()), ( cel.getX() - getAktPozycja().getX()));
+        double direction = Math.atan2((cel.getY() - getAktPozycja().getY()), (cel.getX() - getAktPozycja().getX()));
         double poprzedniaOdl;
         double S;
         S = getAktPredkosc() * dt / 1000;
+        poprzedniaOdl = aktualnaPozycja.odleglosc(cel);
+
         aktualnaPozycja.setX(aktualnaPozycja.getX() + S * Math.cos(direction));
         aktualnaPozycja.setY(aktualnaPozycja.getY() + S * Math.sin(direction));
-        // jeżeli obecna odległość od celu jest większa od poprzedniej - ustawić aktualną pozycję na pozycję celu.
+        // jeżeli obecna odległość od celu jest większa od poprzedniej - ustawić -done
+        // aktualną pozycję na pozycję celu. -done
+        if (this.aktualnaPozycja.odleglosc(cel) > poprzedniaOdl) {
+            this.aktualnaPozycja.setX(cel.getX());
+            this.aktualnaPozycja.setY(cel.getY());
+        }
+
         aktualnaPozycja.print();
         System.out.println(aktualnaPozycja.odleglosc(cel) + " " + getName());
     }
@@ -101,12 +125,21 @@ public class Samochod extends Thread {
     public Pozycja getAktPozycja() {
         return aktualnaPozycja;
     }
-    public Pozycja getStartowaPozycja(){return startowaPozycja;}
+
+    public Pozycja getStartowaPozycja() {
+        return startowaPozycja;
+    }
 
     public double getAktPredkosc() {
-        // zwrocić 0, jeżeli jest wciśnięte sprzęgło, silnik jest wyłączony lub jest wrzucony luz (aktualny bieg jest 0)
-        // obliczać prędkość jako obroty * przełożenie * 0.008
-        return 10;
+        if (this.getStanSprzegla() || !this.getStanWlaczenia() || this.getAktBieg() == 0) {
+            return 0d;
+        } else {
+            return this.getAktObroty() * this.getAktPrzelozenie() * 0.008;
+        }
+        // zwrocić 0, jeżeli jest wciśnięte sprzęgło, silnik jest wyłączony lub jest
+        // -done
+        // wrzucony luz (aktualny bieg jest 0)-done
+        // obliczać prędkość jako obroty * przełożenie * 0.008-done
     }
 
     public void run() {
@@ -118,8 +151,9 @@ public class Samochod extends Thread {
         while (true) {
             try {
                 Thread.sleep(dt);
-            } catch (InterruptedException e) {}
-            if(cel==null)
+            } catch (InterruptedException e) {
+            }
+            if (cel == null)
                 continue;
             jedzDo(cel);
         }

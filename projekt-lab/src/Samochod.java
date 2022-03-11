@@ -18,12 +18,14 @@ public class Samochod extends Thread {
         this.aktualnaPozycja = aktualnaPozycja;
         this.silnik = silnik;
         this.stanWlaczenia = false;
+
     }
 
     public void wlacz() {
         stanWlaczenia = true;
         silnik.uruchom();
     }
+
 
     public Boolean getStanWlaczenia() {
         return stanWlaczenia;
@@ -76,6 +78,10 @@ public class Samochod extends Thread {
     public void setCel(Pozycja cel) {
         // ustawienie startowaPozycja na aktualną pozycje
         // ustawienie celu
+
+        this.startowaPozycja= new Pozycja(aktualnaPozycja.getX(),aktualnaPozycja.getY());
+        this.cel.setX(cel.getX());
+        this.cel.setY(cel.getY());
     }
     public Pozycja getCel(){
         return cel;
@@ -84,12 +90,16 @@ public class Samochod extends Thread {
     public void jedzDo(Pozycja cel) {
         long dt = 200;
         double direction = Math.atan2((cel.getY() - getAktPozycja().getY()), ( cel.getX() - getAktPozycja().getX()));
-        double poprzedniaOdl;
+        double poprzedniaOdl= aktualnaPozycja.odleglosc(cel);
         double S;
         S = getAktPredkosc() * dt / 1000;
         aktualnaPozycja.setX(aktualnaPozycja.getX() + S * Math.cos(direction));
         aktualnaPozycja.setY(aktualnaPozycja.getY() + S * Math.sin(direction));
         // jeżeli obecna odległość od celu jest większa od poprzedniej - ustawić aktualną pozycję na pozycję celu.
+        if( aktualnaPozycja.odleglosc(cel)> poprzedniaOdl){
+            aktualnaPozycja.setX(cel.getX());
+            aktualnaPozycja.setY(cel.getY());
+        }
         aktualnaPozycja.print();
         System.out.println(aktualnaPozycja.odleglosc(cel) + " " + getName());
     }
@@ -106,7 +116,12 @@ public class Samochod extends Thread {
     public double getAktPredkosc() {
         // zwrocić 0, jeżeli jest wciśnięte sprzęgło, silnik jest wyłączony lub jest wrzucony luz (aktualny bieg jest 0)
         // obliczać prędkość jako obroty * przełożenie * 0.008
-        return 10;
+        if(this.getStanSprzegla() == true ||this.stanWlaczenia != true ){
+            return 0;
+        }else if(this.getAktBieg() == 0){
+            return 0;
+        }else
+        return this.getAktObroty()* this.getAktPrzelozenie()*0.008;
     }
 
     public void run() {

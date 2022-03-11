@@ -29,9 +29,11 @@ public class Pozycja {
         return false;
     }
 
-    public int odleglosc(Pozycja cel){
+    public double odleglosc(Pozycja cel){
         // obliczanie odległości euklidesowej pomiędzy dwoma punktami (poprawić typ)
-        return 0;
+        double odlAktCel= Math.sqrt((Math.pow((cel.getX()-this.getX()),2))+ Math.pow((cel.getY()- this.getY()),2));
+        return odlAktCel;
+
     }
     public void print(){
         System.out.println("x: "+ String.valueOf(x) + " y: " + String.valueOf(y));

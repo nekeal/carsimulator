@@ -10,10 +10,12 @@ public class Komponent {
     }
 
     public String getNazwa(){
-        return " ";
+        return this.nazwa;
     }
 
     public float getCena() {
-        return cena;
+        return this.cena;
     }
+
+    public float getWaga() { return this.waga; }
 }

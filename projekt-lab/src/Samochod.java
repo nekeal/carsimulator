@@ -80,8 +80,8 @@ public class Samochod extends Thread {
         // ustawienie celu
 
         this.startowaPozycja= new Pozycja(aktualnaPozycja.getX(),aktualnaPozycja.getY());
-        this.cel.setX(cel.getX());
-        this.cel.setY(cel.getY());
+        this.cel= new Pozycja(cel.getX(),cel.getY());
+
     }
     public Pozycja getCel(){
         return cel;

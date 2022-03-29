@@ -20,6 +20,9 @@ jobs:
         with:
           java-version: '${{ matrix.java_version }}'
           distribution: "temurin"
+      - name: Create build directory
+        if: ${{ matrix.java_version == 8 }}
+        run: mkdir build
       - name: Compile project
         run: javac projekt-lab/src/*.java -d build
       - name: Check project by running it

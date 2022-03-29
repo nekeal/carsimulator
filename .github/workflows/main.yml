@@ -19,5 +19,7 @@ jobs:
         with:
           java-version: '11'
           distribution: "temurin"
-      - name: Say hey
+      - name: Compile project
         run: javac projekt-lab/src/*.java -d build
+      - name: Check project by running it
+        run:  java -classpath "build" Kontroler start

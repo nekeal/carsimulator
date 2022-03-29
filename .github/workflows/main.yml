@@ -23,3 +23,7 @@ jobs:
         run: javac projekt-lab/src/*.java -d build
       - name: Check project by running it
         run:  java -classpath "build" Kontroler start
+      - name: Run checkstyle
+        run: |
+          wget https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.1/checkstyle-10.1-all.jar
+          java -jar checkstyle-10.1-all.jar . -c google_checks.xml 

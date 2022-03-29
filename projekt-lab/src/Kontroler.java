@@ -22,8 +22,13 @@ public class Kontroler {
         skrzynia2.zwiekszBieg();
         samochod1.setCel(new Pozycja(100, 100));
         samochod2.setCel(new Pozycja(100, 100));
-        samochod1.start();
-        samochod2.start();
+        if(args.length == 0) {
+            samochod1.start();
+            samochod2.start();
+        }
+        else{
+            System.out.println("Program finished successfully");
+        }
     }
 
     public static Samochod getPredefinedSamochod(int model){

@@ -28,6 +28,7 @@ public class Kontroler {
         }
         else{
             System.out.println("Program finished successfully");
+            System.exit(5);
         }
     }
 
